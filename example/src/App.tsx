@@ -4,8 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-interactive-charts';
 
 export default function App() {
-  
-
   return (
     <View style={styles.container}>
       <BarChart
@@ -19,7 +17,7 @@ export default function App() {
           { label: 's2', value: 700 },
           { label: 'e', value: 800 },
           { label: 'n', value: 900 },
-          { label: 'n1', value: 900 }
+          { label: 'n1', value: 900 },
         ]}
       />
     </View>

@@ -1,1 +1,1 @@
-export {BarChart} from './components/barchart'
+export { BarChart } from './components/barchart';
