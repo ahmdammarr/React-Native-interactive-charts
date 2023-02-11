@@ -1,6 +1,6 @@
 {
   "name": "react-native-interactive-charts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "test",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
@@ -83,7 +83,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-svg": "*"
   },
   "engines": {
     "node": ">= 16.0.0"
