@@ -1,18 +1,27 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-interactive-charts';
+import { StyleSheet, View } from 'react-native';
+import { BarChart } from 'react-native-interactive-charts';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <BarChart
+        data={[
+          { label: 'o', value: 100 },
+          { label: 't', value: 200 },
+          { label: 'T', value: 300 },
+          { label: 'f', value: 400 },
+          { label: 'f1', value: 500 },
+          { label: 's', value: 600 },
+          { label: 's2', value: 700 },
+          { label: 'e', value: 800 },
+          { label: 'n', value: 900 },
+          { label: 'n1', value: 900 }
+        ]}
+      />
     </View>
   );
 }
