@@ -8,10 +8,10 @@ export type BarChartProps = {
   data: BarChartDataProps;
   axisColor?: string;
   barColor?: string;
-  hideLabels?: boolean;
-  hideValues?: boolean;
-  hideLabelsAxis?: boolean;
-  hideValuesAxis?: boolean;
+  hasLabels?: boolean;
+  hasValues?: boolean;
+  hasLabelsAxis?: boolean;
+  hasValuesAxis?: boolean;
   selectedBarColor?: string;
   labelsColor?: string;
   valuesColor?: string;
@@ -20,6 +20,8 @@ export type BarChartProps = {
   containerWidth?: number;
   graphMargin?: number;
   barWidth?: number;
-  graphGridWidth?: number;
   svgBackground?: ReactElement;
+  size?: { width?: number; height?: number };
+  fontSize?: number;
+  power?: number;
 };

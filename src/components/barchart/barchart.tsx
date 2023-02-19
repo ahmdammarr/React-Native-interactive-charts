@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { G, Line, Rect, Svg, Text } from 'react-native-svg';
 import { scalePoint, scaleLinear } from 'd3-scale';
 import { range, max } from 'd3-array';
-// const abbr = require('number-abbreviate')
 import type { BarChartProps } from './types';
+
+const abbr = require('number-abbreviate');
 
 const { width } = Dimensions.get('screen');
 export const BarChart = ({
@@ -12,91 +13,68 @@ export const BarChart = ({
   svgBackground,
   containerHeight = 261.166,
   containerWidth = width * 0.9,
-  graphMargin = 14,
+  graphMargin = 12,
   barWidth = 14,
-  graphGridWidth = width / 15,
   axisColor = '#fff',
   barColor = '#000000',
   selectedBarColor = '#1a759f',
   labelsColor = '#fff',
   valuesColor = '#fff',
   isClickableBars = false,
-  hideLabels = false,
-  hideLabelsAxis = false,
-  hideValues = false,
-  hideValuesAxis = false,
+  hasLabelsAxis = true,
+  hasLabels = false,
+  hasValuesAxis = true,
+  hasValues = false,
+  fontSize = 10,
+  power: thePower,
 }: BarChartProps): React.ReactElement => {
-  const [selectedBar, setSelectedBar] = React.useState('');
-
-  const graphHeight = containerHeight - 2 * graphMargin;
-  const graphWidth = containerWidth - 2 * graphMargin;
+  const [selectedBar, setSelectedBar] = useState('');
+  const graphHeight = containerHeight - graphMargin;
+  const graphWidth = containerWidth - graphMargin;
 
   const xDomain = data.map((item) => item.label);
   const xRange = [0, graphWidth];
   const x = scalePoint().domain(xDomain).range(xRange).padding(1);
+  const largestValue = max(data.map((item) => item.value)) || 0;
+  const power =
+    thePower ||
+    parseInt(
+      `1${Array.from(Array(largestValue.toString().length - 1).fill('0')).join(
+        ''
+      )}`
+    );
 
-  const largestValue = Math.max(...data.map((item) => item.value));
-  const power = parseInt(
-    `1${Array.from(Array(largestValue.toString().length - 1).fill('0')).join(
-      ''
-    )}`
-  );
+  const yAxiesValues = range(0, largestValue + power, power);
 
-  const maxValu = Math.ceil(largestValue / power) * power;
+  const yDomain = [0, largestValue || 0];
 
-  const yAxiesValues = range(0, maxValu + power, power);
-
-  const yDomain = [0, max(data, (d) => d.value)];
   const yRange = [0, graphHeight];
 
-  const y = scaleLinear()
-    //@ts-ignore
-    .domain(yDomain)
-    .range(yRange);
+  const y = scaleLinear().domain(yDomain).range(yRange);
 
   return (
-    <View style={[styles.viewContainer, { width: width * 0.9 }]}>
+    <View style={[styles.viewContainer]}>
       <Svg
         style={[
           styles.svgContainer,
           {
-            width: width * 0.9,
-            aspectRatio: containerWidth / containerHeight,
+            width: graphWidth,
+            height: graphHeight,
+            aspectRatio: graphWidth / graphHeight,
           },
         ]}
         width="100%"
-        viewBox={`0 0 ${containerWidth - 10} ${containerHeight}`}
+        viewBox={`0 0 ${containerWidth} ${containerHeight}`}
         preserveAspectRatio="none"
       >
         {svgBackground || null}
-
-        <G y={graphHeight + graphMargin} x={20}>
-          {!hideLabelsAxis && (
-            <Line
-              x1={10}
-              y1={2}
-              x2={graphWidth - graphGridWidth + 10}
-              y2={2}
-              stroke={axisColor}
-              strokeWidth="1.5"
-            />
-          )}
-          {!hideValuesAxis && (
-            <Line
-              x1={10}
-              y1={2}
-              x2={10}
-              y2={-y(largestValue + 50)}
-              stroke={axisColor}
-              strokeWidth="1.5"
-            />
-          )}
-          {data.map((item, index) => {
+        <G y={graphHeight} x={hasValues ? graphMargin : 0}>
+          {data.map((item) => {
             return (
-              <Fragment key={String(index)}>
+              <Fragment key={`all-bar-component-${item.label}`}>
                 <Rect
-                  key={`bar${item.label}`}
-                  x={x(item?.label) || 0 - barWidth / 2}
+                  key={`bar-${item.label}`}
+                  x={x(item?.label)}
                   y={-y(item.value)}
                   width={barWidth}
                   height={y(item.value)}
@@ -109,46 +87,61 @@ export const BarChart = ({
                 />
                 {selectedBar === item.label && (
                   <G
-                    key={item.label}
+                    key={`tip-${item.label}`}
                     x={(x(item?.label) || 0) - graphWidth / 10}
                     y={y(item.value + graphHeight / 3) * -1}
-                  >
-                    {/* <ToolTip value={item?.value} /> */}
-                  </G>
+                  />
                 )}
               </Fragment>
             );
           })}
-          {!hideLabels &&
+          {hasLabels &&
             data.map((item) => (
               <Text
-                key={`label${item.value}`}
-                fontSize="10"
+                key={`label${item.label}`}
+                fontSize={fontSize}
                 fill={labelsColor}
-                x={(x(item?.label) || 0) + 5}
-                y={12.5}
+                x={(x(item?.label) || 0) + barWidth / 2}
+                y={graphMargin}
                 textAnchor="middle"
               >
                 {item.label}
               </Text>
             ))}
-
-          {!hideValues &&
-            yAxiesValues.map((item, index) => (
-              <Text
-                key={`label${item + index}`}
-                fontSize="10"
-                fill={valuesColor}
-                x={-4}
-                y={-y(item)}
-                textAnchor="middle"
-              >
-                {
-                  //abbr(item)
-                  item
-                }
-              </Text>
-            ))}
+          {hasValues &&
+            yAxiesValues.map((value) => {
+              return (
+                <Text
+                  key={`label${value}`}
+                  fontSize={fontSize}
+                  fill={valuesColor}
+                  y={-y(value) + graphMargin}
+                  textAnchor="middle"
+                >
+                  {abbr(value)}
+                </Text>
+              );
+            })}
+          {hasLabelsAxis && (
+            <Line
+              x1={graphMargin + 2}
+              y1={1}
+              x2={graphWidth + 2}
+              y2={1}
+              stroke={axisColor}
+              strokeWidth="1.5"
+            />
+          )}
+          {hasValuesAxis && (
+            <Line
+              x1={graphMargin + 2}
+              y1={1}
+              x2={graphMargin + 2}
+              y2={-y(largestValue)}
+              stroke={axisColor}
+              strokeWidth="1.5"
+            />
+          )}
         </G>
       </Svg>
     </View>
