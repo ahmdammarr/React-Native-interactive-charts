@@ -57,10 +57,10 @@
     "@evilmartians/lefthook": "^1.2.2",
     "@react-native-community/eslint-config": "^3.0.2",
     "@release-it/conventional-changelog": "^5.0.0",
-    "@types/jest": "^28.1.2",
-    "@types/react": "~17.0.21",
     "@types/d3-array": "^3.0.1",
     "@types/d3-scale": "^4.0.1",
+    "@types/jest": "^28.1.2",
+    "@types/react": "~17.0.21",
     "@types/react-native": "0.70.0",
     "commitlint": "^17.0.2",
     "del-cli": "^5.0.0",
@@ -82,6 +82,7 @@
     "@types/react": "17.0.21"
   },
   "peerDependencies": {
+    "number-abbreviat": "*",
     "react": "*",
     "react-native": "*",
     "react-native-svg": "*"
@@ -161,6 +162,7 @@
   "dependencies": {
     "d3-array": "^3.2.2",
     "d3-scale": "^4.0.2",
+    "number-abbreviate": "^2.0.0",
     "react-native-svg": "^13.8.0"
   }
 }
