@@ -4,6 +4,7 @@ import { G, Line, Rect, Svg, Text } from 'react-native-svg';
 import { scalePoint, scaleLinear } from 'd3-scale';
 import { range, max } from 'd3-array';
 import type { BarChartProps } from './types';
+import { truncString } from '../../helpers/truncString';
 
 const abbr = require('number-abbreviate');
 
@@ -29,6 +30,7 @@ export const BarChart = ({
   power: thePower,
 }: BarChartProps): React.ReactElement => {
   const [selectedBar, setSelectedBar] = useState('');
+
   const graphHeight = containerHeight - graphMargin;
   const graphWidth = containerWidth - graphMargin;
 
@@ -105,7 +107,10 @@ export const BarChart = ({
                 y={graphMargin}
                 textAnchor="middle"
               >
-                {item.label}
+                {truncString({
+                  text: item?.label,
+                  maxLength: 3,
+                })}
               </Text>
             ))}
           {hasValues &&
