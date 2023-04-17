@@ -51,16 +51,12 @@ const cities = [
   // { label: 'Alexandria', value: 6642469 },
   // { label: 'Ankara', value: 6394844 },
   // { label: 'Jeddah', value: 6380000 },
-]
+];
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <BarChart
-        data={cities}
-        hasLabels
-        hasValues
-      />
+      <BarChart data={cities} hasLabels hasValues />
     </View>
   );
 }
