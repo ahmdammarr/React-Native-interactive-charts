@@ -5,7 +5,6 @@ import { scalePoint, scaleLinear } from 'd3-scale';
 import { range, max } from 'd3-array';
 import type { BarChartProps } from './types';
 import { truncString } from '../../helpers/truncString';
-export { truncString } from '../../helpers/truncString';
 
 const abbr = require('number-abbreviate');
 
