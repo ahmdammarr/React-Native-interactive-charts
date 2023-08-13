@@ -1,6 +1,6 @@
 # react-native-interactive-charts
 
-react native interactive charts library
+
 
 ## Installation
 
