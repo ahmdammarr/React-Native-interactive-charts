@@ -2,9 +2,6 @@
 
 react native interactive charts library
 
-## License
-
-MIT
 
 ## License
 
